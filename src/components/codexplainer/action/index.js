@@ -4,8 +4,12 @@ export async function explain(prevState, formData) {
   const code = formData.get("code");
   const language = formData.get("language");
   console.log(`Generating explanation for ${language}`);
+  
+  // Get API base URL with fallback (same as axios.js)
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://brainwave-backend-1.onrender.com/api';
+  
   try {
-    const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/explain-code`, {
+    const res = await fetch(`${API_BASE_URL}/explain-code`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ code, language }),
