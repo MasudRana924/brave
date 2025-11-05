@@ -14,7 +14,7 @@ const api = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
-  withCredentials: true, // Send cookies with requests
+  withCredentials: false, // Optional: false is safer when using localStorage (not cookies)
 });
 
 // Request interceptor - Add token to every request
