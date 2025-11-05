@@ -38,6 +38,7 @@ export const AuthProvider = ({ children }) => {
     try {
       setLoading(true);
       setError(null);
+      console.log('Registering user...', userData);
       const response = await authApi.register(userData);
       
       setUser(response.user);
@@ -46,7 +47,16 @@ export const AuthProvider = ({ children }) => {
       
       return { success: true, data: response };
     } catch (error) {
-      const errorMessage = error.response?.data?.message || 'Registration failed';
+      console.error('Registration error:', error);
+      
+      // Handle network errors
+      if (!error.response) {
+        const errorMessage = 'Network error: Could not connect to server. Please check your internet connection.';
+        setError(errorMessage);
+        return { success: false, error: errorMessage };
+      }
+      
+      const errorMessage = error.response?.data?.message || error.message || 'Registration failed';
       setError(errorMessage);
       return { success: false, error: errorMessage };
     } finally {
@@ -59,6 +69,7 @@ export const AuthProvider = ({ children }) => {
     try {
       setLoading(true);
       setError(null);
+      console.log('Logging in user...', { email: credentials.email });
       const response = await authApi.login(credentials);
       
       setUser(response.user);
@@ -67,7 +78,16 @@ export const AuthProvider = ({ children }) => {
       
       return { success: true, data: response };
     } catch (error) {
-      const errorMessage = error.response?.data?.message || 'Login failed';
+      console.error('Login error:', error);
+      
+      // Handle network errors
+      if (!error.response) {
+        const errorMessage = 'Network error: Could not connect to server. Please check your internet connection.';
+        setError(errorMessage);
+        return { success: false, error: errorMessage };
+      }
+      
+      const errorMessage = error.response?.data?.message || error.message || 'Login failed';
       setError(errorMessage);
       return { success: false, error: errorMessage };
     } finally {
